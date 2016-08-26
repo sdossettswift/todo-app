@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160826024248) do
+ActiveRecord::Schema.define(version: 20160826031842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20160826024248) do
     t.string   "category"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.datetime "completed_at"
     t.index ["todo_list_id"], name: "index_todo_items_on_todo_list_id", using: :btree
   end
 
