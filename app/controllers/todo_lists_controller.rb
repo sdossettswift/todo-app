@@ -1,11 +1,12 @@
 class TodoListsController < ApplicationController
   before_action :set_todo_list, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  before_action :set_user
 
   # GET /todo_lists
   # GET /todo_lists.json
   def index
-    @todo_lists = TodoList.all
+    @todo_lists = TodoList.where(user_id: current_user)
   end
 
   # GET /todo_lists/1
@@ -15,7 +16,7 @@ class TodoListsController < ApplicationController
 
   # GET /todo_lists/new
   def new
-    @todo_list = TodoList.new
+    @todo_list = current_user.todo_lists.build
   end
 
   # GET /todo_lists/1/edit
@@ -25,7 +26,8 @@ class TodoListsController < ApplicationController
   # POST /todo_lists
   # POST /todo_lists.json
   def create
-    @todo_list = TodoList.new(todo_list_params)
+
+    @todo_list = current_user.todo_lists.build(todo_list_params)
 
     respond_to do |format|
       if @todo_list.save
@@ -70,6 +72,10 @@ class TodoListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def todo_list_params
-      params.require(:todo_list).permit(:title, :description)
+      params.require(:todo_list).permit(:title, :description, :user_id)
+    end
+
+    def set_user
+      @current_user = User.find_by id: session[:user_id]
     end
 end
